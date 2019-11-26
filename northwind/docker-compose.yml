@@ -4,27 +4,27 @@ networks:
   appnet:
 
 volumes:
-  appval:
+  appvol:
 
 services:
   nwdb:
-    image: kubernetes4ts/nwdb:v1
+    image: kubernetes4ts/tsdb:v1
     build: 
       context: ./database
     environment:
-    - MYSQL_ROOT_PASSWORD=changeit
+      - MYSQL_ROOT_PASSWORD=changeit
     networks:
-    - appnet
+      - appnet
     volumes:
-    - appvol:/var/lib/mysql
+      - appvol:/var/lib/mysql
 
   nwapp:
-    image: kubernetes4ts/nwapp:latest
+    image: kubernetes4ts/tsdbapp:latest
     build:
       context: ./server
     environment:
-    - DB_HOST=nwdb
+      - DB_HOST=nwdb
     ports:
-    - 80:3000
+      - 80:3000
     networks:
-    - appnet
+      - appnet
