@@ -8,7 +8,7 @@ volumes:
 
 services:
   nwdb:
-    image: kubernetes4ts/tsdb:v1
+    image: kubernetes4ts/mysqldb:latest
     build: 
       context: ./database
     environment:
@@ -19,7 +19,7 @@ services:
       - appvol:/var/lib/mysql
 
   nwapp:
-    image: kubernetes4ts/tsdbapp:latest
+    image: kubernetes4ts/webappnw:latest
     build:
       context: ./server
     environment:

@@ -1,12 +1,14 @@
 FROM node:latest
 
+LABEL "name"="fortunecookie"
+
 # BUILDING IMAGE
 # SET ENV VARS
 ENV APP_ROOT=/app
 ENV APP_PORT=3000
 
 # CREATE THE DIR AND CD INTO IT
-WORKDIR ${APP_PORT}
+WORKDIR ${APP_ROOT}
 
 # COPY FILES INTO THE IMAGE INTO /app
 ADD main.js .
@@ -22,7 +24,7 @@ RUN npm install
 #CONTAINER EXPOSED PORT
 EXPOSE ${APP_PORT}
 
-#HEALTHCHECK FOR APP
+#APP HEALTHCHECK
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD curl -f http://localhost:${APP_PORT}/health > /dev/null || exit 1
 
 ENTRYPOINT ["node", "main.js"]
