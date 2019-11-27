@@ -25,7 +25,7 @@ RUN npm install
 EXPOSE ${APP_PORT}
 
 #APP HEALTHCHECK
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD curl -f http://localhost:${APP_PORT}/health > /dev/null || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD curl -s -f http://localhost:${APP_PORT}/health > /dev/null || exit 1
 
 ENTRYPOINT ["node", "main.js"]
 
