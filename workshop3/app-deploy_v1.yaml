@@ -1,0 +1,40 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: appv1-deploy
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        name: app
+        version: v1
+    spec:
+      containers:
+        - name: app-container
+          image: stackupiss/northwind-app:v1
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "55M"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: DB_HOST
+              value: mysqldb-svc.default.svc.cluster.local
+            - name: DB_USER
+              value: root
+            - name: DB_PASSWORD
+              value: changeit
+            - name: MYSQL_ROOT_PASSWORD
+              value: changeit
+            - name: MYSQL_DATABASE
+              value: northwind
+            - name: INSTANCE_IP_ADDRESS
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+          ports:
+            - name: app-port
+              containerPort: 3000
+      restartPolicy: Always
