@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weatherapp
+spec:
+  selector:
+    matchLabels:
+      app: weatherapp
+  template:
+    metadata:
+      labels:
+        app: weatherapp
+    spec:
+      containers:
+      - name: weatherapp-container
+        image: stackupiss/weather:v1
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: APP_ID
+            value: 37dadd24402afd7dc704edecf836955f
+          - name: APP_DEFAULT_CITY
+            value: "London"
+          - name: APP_PORT
+            value: "5001"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5001
+          name: weatherapp-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: weatherapp-svc
+spec:
+  selector:
+    app: weatherapp
+  ports:
+  - port: 80
+    targetPort: 5001
